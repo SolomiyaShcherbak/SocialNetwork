@@ -1,13 +1,13 @@
 ﻿using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
-using SocialNetwork.DAL.Interfaces;
 using SocialNetwork.DTO;
+using SocialNetwork.MongoDBDAL.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SocialNetwork.DAL.Concrete
+namespace SocialNetwork.MongoDBDAL.Concrete
 {
-    public class CommentDAL : ICommentDAL
+    public class CommentDALMongoDB : ICommentDALMongoDB
     {
         string ConnectionString
         {
@@ -17,65 +17,65 @@ namespace SocialNetwork.DAL.Concrete
             }
         }
 
-        public List<CommentDTO> GetCommentsByPostId(string postId)
+        public List<CommentDTOMongoDB> GetCommentsByPostId(string postId)
         {
             var client = new MongoClient(ConnectionString);
             var database = client.GetDatabase("SocialNetwork");
-            var comments = database.GetCollection<CommentDTO>("Comments");
+            var comments = database.GetCollection<CommentDTOMongoDB>("Comments");
 
-            var filter = Builders<CommentDTO>.Filter.Eq("PostId", postId);
+            var filter = Builders<CommentDTOMongoDB>.Filter.Eq("PostId", postId);
 
             return comments.Find(filter).ToList();
         }
 
-        public CommentDTO CreateComment(CommentDTO comment)
+        public CommentDTOMongoDB CreateComment(CommentDTOMongoDB comment)
         {
             var client = new MongoClient(ConnectionString);
             var database = client.GetDatabase("SocialNetwork");
-            var comments = database.GetCollection<CommentDTO>("Comments");
+            var comments = database.GetCollection<CommentDTOMongoDB>("Comments");
 
             comments.InsertOne(comment);
 
             return comment;
         }
 
-        public CommentDTO DeleteComment(string commentId, string userId)
+        public CommentDTOMongoDB DeleteComment(string commentId, string userId)
         {
             var client = new MongoClient(ConnectionString);
             var database = client.GetDatabase("SocialNetwork");
-            var comments = database.GetCollection<CommentDTO>("Comments");
+            var comments = database.GetCollection<CommentDTOMongoDB>("Comments");
 
-            var filter = Builders<CommentDTO>.Filter.And(
-                Builders<CommentDTO>.Filter.Eq("Id", commentId),
-                Builders<CommentDTO>.Filter.Eq("UserId", userId));
+            var filter = Builders<CommentDTOMongoDB>.Filter.And(
+                Builders<CommentDTOMongoDB>.Filter.Eq("Id", commentId),
+                Builders<CommentDTOMongoDB>.Filter.Eq("UserId", userId));
 
             comments.DeleteOne(filter);
 
             return null;
         }
 
-        public CommentDTO AddLikeToComment(string commentId, string userId)
+        public CommentDTOMongoDB AddLikeToComment(string commentId, string userId)
         {
             var client = new MongoClient(ConnectionString);
             var database = client.GetDatabase("SocialNetwork");
-            var comments = database.GetCollection<CommentDTO>("Comments");
+            var comments = database.GetCollection<CommentDTOMongoDB>("Comments");
 
-            var filter = Builders<CommentDTO>.Filter.Eq("Id", commentId);
-            var update = Builders<CommentDTO>.Update
+            var filter = Builders<CommentDTOMongoDB>.Filter.Eq("Id", commentId);
+            var update = Builders<CommentDTOMongoDB>.Update
                 .AddToSet<string>("Likes", userId)
                 .Inc("LikeCount", 1);
 
             return comments.FindOneAndUpdate(filter, update);
         }
 
-        public CommentDTO RemoveLikeFromComment(string commentId, string userId)
+        public CommentDTOMongoDB RemoveLikeFromComment(string commentId, string userId)
         {
             var client = new MongoClient(ConnectionString);
             var database = client.GetDatabase("SocialNetwork");
-            var comments = database.GetCollection<CommentDTO>("Comments");
+            var comments = database.GetCollection<CommentDTOMongoDB>("Comments");
 
-            var filter = Builders<CommentDTO>.Filter.Eq("Id", commentId);
-            var update = Builders<CommentDTO>.Update
+            var filter = Builders<CommentDTOMongoDB>.Filter.Eq("Id", commentId);
+            var update = Builders<CommentDTOMongoDB>.Update
                 .Pull("Likes", userId)
                 .Inc("LikeCount", -1);
 

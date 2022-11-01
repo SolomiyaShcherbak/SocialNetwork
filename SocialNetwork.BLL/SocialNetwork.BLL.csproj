@@ -4,17 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F28EE92D-CA8C-4888-8712-30DA90B26435}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>SocialNetwork</RootNamespace>
-    <AssemblyName>SocialNetwork</AssemblyName>
+    <ProjectGuid>{A75CF31B-5E96-467C-A196-88095E910885}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SocialNetwork.BLL</RootNamespace>
+    <AssemblyName>SocialNetwork.BLL</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,7 +23,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -43,32 +41,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActionMenu.cs" />
-    <Compile Include="HandleMenu.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="Command.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="VisualMenu.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="SocialNetwork.BLL\SocialNetwork.BLL.csproj">
-      <Project>{A75CF31B-5E96-467C-A196-88095E910885}</Project>
-      <Name>SocialNetwork.BLL</Name>
-    </ProjectReference>
-    <ProjectReference Include="SocialNetwork.DTO\SocialNetwork.DTO.csproj">
-      <Project>{4f4f5c8b-b55e-4668-9283-0deb54ddd4a7}</Project>
+    <ProjectReference Include="..\SocialNetwork.DTO\SocialNetwork.DTO.csproj">
+      <Project>{4F4F5C8B-B55E-4668-9283-0DEB54DDD4A7}</Project>
       <Name>SocialNetwork.DTO</Name>
     </ProjectReference>
-    <ProjectReference Include="SocialNetwork.MongoDBDAL\SocialNetwork.MongoDBDAL.csproj">
-      <Project>{7311b2f5-a44f-425f-9fc1-aae9c28a241c}</Project>
+    <ProjectReference Include="..\SocialNetwork.MongoDBDAL\SocialNetwork.MongoDBDAL.csproj">
+      <Project>{7311B2F5-A44F-425F-9FC1-AAE9C28A241C}</Project>
       <Name>SocialNetwork.MongoDBDAL</Name>
     </ProjectReference>
-    <ProjectReference Include="SocialNetwork.Neo4JDAL\SocialNetwork.Neo4JDAL.csproj">
+    <ProjectReference Include="..\SocialNetwork.Neo4JDAL\SocialNetwork.Neo4JDAL.csproj">
       <Project>{D3463033-39F7-4E73-84E9-2D49EA7249CA}</Project>
       <Name>SocialNetwork.Neo4JDAL</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
