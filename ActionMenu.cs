@@ -1,9 +1,20 @@
 ﻿using SocialNetwork.MongoDBDAL.Concrete;
+<<<<<<< HEAD
 using SocialNetwork.DTO;
 using System;
 using System.Collections.Generic;
 using SocialNetwork.BLL;
 using SocialNetwork.Neo4JDAL.Concrete;
+=======
+using SocialNetwork.MongoDBDAL.Interfaces;
+using SocialNetwork.DTO;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using SocialNetwork.BLL;
+using SocialNetwork.Neo4JDAL.Concrete;
+using SocialNetwork.DTO.Neo4JDTO;
+>>>>>>> 095759200502d0442076f1296f8cbea7ce452052
 
 namespace SocialNetwork
 {
@@ -275,7 +286,7 @@ namespace SocialNetwork
 
         void displayConnectionIfExists(string userId, string personId)
         {
-            if (command.CheckConnection(userId, personId) != null)
+            if (command.CheckRelationship(userId, personId) != null)
                 Console.WriteLine("You are subscribed to this user");
             else
                 Console.WriteLine("You are not subscribed to this user");

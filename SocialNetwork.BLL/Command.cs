@@ -111,7 +111,7 @@ namespace SocialNetwork.BLL
             userDALNeo4J.DeleteRelationship(userId, personId);
         }
 
-        public UserDTONeo4J CheckConnection(string user1Id, string user2Id)
+        public UserDTONeo4J CheckRelationship(string user1Id, string user2Id)
         {
             return userDALNeo4J.FindRelationship(user1Id, user2Id);
         }
