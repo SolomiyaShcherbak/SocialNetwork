@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace SocialNetwork.DTO
 {
-    public class UserDTO
+    public class UserDTOMongoDB
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]

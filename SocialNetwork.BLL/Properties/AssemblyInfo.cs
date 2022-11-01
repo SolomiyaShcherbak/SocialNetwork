@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("SocialNetwork.DAL")]
+[assembly: AssemblyTitle("SocialNetwork.BLL")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("SocialNetwork.DAL")]
+[assembly: AssemblyProduct("SocialNetwork.BLL")]
 [assembly: AssemblyCopyright("Copyright ©  2022")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("7311b2f5-a44f-425f-9fc1-aae9c28a241c")]
+[assembly: Guid("a75cf31b-5e96-467c-a196-88095e910885")]
 
 // Version information for an assembly consists of the following four values:
 //

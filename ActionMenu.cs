@@ -1,26 +1,23 @@
-﻿using SocialNetwork.DAL.Concrete;
-using SocialNetwork.DAL.Interfaces;
+﻿using SocialNetwork.MongoDBDAL.Concrete;
 using SocialNetwork.DTO;
 using System;
 using System.Collections.Generic;
+using SocialNetwork.BLL;
+using SocialNetwork.Neo4JDAL.Concrete;
 
 namespace SocialNetwork
 {
     public class ActionMenu
     {
-        IPostDAL postDAL;
-        ICommentDAL commentDAL;
-        IUserDAL userDAL;
-        UserDTO currentUser;
+        Command command;
+        UserDTOMongoDB currentUser;
 
         public ActionMenu()
         {
-            postDAL = new PostDAL();
-            commentDAL = new CommentDAL();
-            userDAL = new UserDAL();
+            command = new Command(new UserDALMongoDB(), new PostDALMongoDB(), new CommentDALMongoDB(), new UserDALNeo4J());
         }
 
-        protected void CreateUser()
+        public void CreateUser()
         {
             Console.WriteLine("Enter a first name:");
             var firstName = Console.ReadLine();
@@ -42,7 +39,7 @@ namespace SocialNetwork
                 interest = Console.ReadLine();
             }
 
-            var user = new UserDTO
+            var user = new UserDTOMongoDB
             {
                 FirstName = firstName,
                 LastName = lastName,
@@ -52,11 +49,16 @@ namespace SocialNetwork
                 Interests = interests,
                 Subscriptions = new List<string>()
             };
-            user = userDAL.CreateUser(user);
+            user = command.CreateUser(user);
             Console.WriteLine($"New user Id: {user.Id}");
         }
 
-        protected void AuthenticateUser(ref bool status)
+        public void DeleteUser()
+        {
+            command.DeleteUser(currentUser.Id);
+        }
+
+        public void AuthenticateUser(ref bool status)
         {
             ConsoleKeyInfo key;
             string password = "";
@@ -83,7 +85,7 @@ namespace SocialNetwork
             } while (key.Key != ConsoleKey.Enter);
             password = password.Replace("\r", "");
 
-            currentUser = userDAL.AuthenticateUser(email, password);
+            currentUser = command.AuthenticateUser(email, password);
             if (currentUser != null)
                 status = true;
             else
@@ -92,19 +94,19 @@ namespace SocialNetwork
 
         protected void ShowStream()
         {
-            var stream = postDAL.GetStream();
-            var comments = new List<CommentDTO>();
+            var stream = command.GetStream();
+            var comments = new List<CommentDTOMongoDB>();
             displayPostsAndComments(stream, comments);
         }
 
-        protected void CreatePost()
+        public void CreatePost()
         {
             Console.WriteLine("Enter post title:");
             var title = Console.ReadLine();
             Console.WriteLine("Enter post body:");
             var body = Console.ReadLine();
 
-            var post = new PostDTO
+            var post = new PostDTOMongoDB
             {
                 UserId = currentUser.Id,
                 User = currentUser.FirstName + " " + currentUser.LastName,
@@ -114,25 +116,25 @@ namespace SocialNetwork
                 LikeCount = 0,
                 Likes = new List<string>()
             };
-            post = postDAL.CreatePost(post);
+            post = command.CreatePost(post);
             Console.WriteLine($"New post Id: {post.Id}");
         }
 
-        protected void DeletePost()
+        public void DeletePost()
         {
             Console.WriteLine("Enter post Id:");
             var postId = Console.ReadLine();
-            postDAL.DeletePost(postId, currentUser.Id);
+            command.DeletePost(postId, currentUser.Id);
         }
 
-        protected void AddCommentToPost()
+        public void AddCommentToPost()
         {
             Console.WriteLine("Enter post Id:");
             var postId = Console.ReadLine();
             Console.WriteLine("Enter comment body:");
             var body = Console.ReadLine();
 
-            var comment = new CommentDTO
+            var comment = new CommentDTOMongoDB
             {
                 Body = body,
                 PostId = postId,
@@ -142,116 +144,127 @@ namespace SocialNetwork
                 LikeCount = 0,
                 Likes = new List<string>()
             };
-            comment = commentDAL.CreateComment(comment);
+            comment = command.AddCommentToPost(comment);
             Console.WriteLine($"New comment Id: {comment.Id}");
         }
 
-        protected void RemoveCommentFromPost()
+        public void RemoveCommentFromPost()
         {
             Console.WriteLine("Enter comment Id:");
             var commentId = Console.ReadLine();
-            commentDAL.DeleteComment(commentId, currentUser.Id);
+            command.RemoveCommentFromPost(commentId, currentUser.Id);
         }
 
-        protected void AddLikeToPost()
+        public void AddLikeToPost()
         {
             Console.WriteLine("Enter post Id:");
             var postId = Console.ReadLine();
-            postDAL.AddLikeToPost(postId, currentUser.Id);
+            command.AddLikeToPost(postId, currentUser.Id);
         }
 
-        protected void RemoveLikeFromPost()
+        public void RemoveLikeFromPost()
         {
             Console.WriteLine("Enter post Id:");
             var postId = Console.ReadLine();
-            postDAL.RemoveLikeFromPost(postId, currentUser.Id);
+            command.RemoveLikeFromPost(postId, currentUser.Id);
         }
 
-        protected void AddLikeToComment()
+        public void AddLikeToComment()
         {
             Console.WriteLine("Enter comment Id:");
             var commentId = Console.ReadLine();
-            commentDAL.AddLikeToComment(commentId, currentUser.Id);
+            command.AddLikeToComment(commentId, currentUser.Id);
         }
 
-        protected void RemoveLikeFromComment()
+        public void RemoveLikeFromComment()
         {
             Console.WriteLine("Enter comment Id:");
             var commentId = Console.ReadLine();
-            commentDAL.RemoveLikeFromComment(commentId, currentUser.Id);
+            command.RemoveLikeFromComment(commentId, currentUser.Id);
         }
 
-        protected void ShowUserPosts()
+        public void ShowUserPosts()
         {
             Console.WriteLine("Enter user Id:");
             var userId = Console.ReadLine();
-            var posts = postDAL.GetUserPosts(userId);
-            var comments = new List<CommentDTO>();
+            var posts = command.GetUserPosts(userId);
+            var comments = new List<CommentDTOMongoDB>();
             displayPostsAndComments(posts, comments);
         }
 
-        protected void ShowAllPosts()
+        public void ShowAllPosts()
         {
-            var posts = postDAL.GetAllPosts();
-            var comments = new List<CommentDTO>();
+            var posts = command.GetAllPosts();
+            var comments = new List<CommentDTOMongoDB>();
             displayPostsAndComments(posts, comments);
         }
 
-        protected void AddUserToSubscriptions()
+        public void AddUserToSubscriptions()
         {
             Console.WriteLine("Enter user Id:");
             var personId = Console.ReadLine();
-            userDAL.AddToSubscriptions(currentUser.Id, personId);
+            command.AddUserToSubscriptions(currentUser.Id, personId);
         }
 
-        protected void RemoveUserFromSubscriptions()
+        public void RemoveUserFromSubscriptions()
         {
             Console.WriteLine("Enter user Id:");
             var personId = Console.ReadLine();
-            userDAL.RemoveFromSubscriptions(currentUser.Id, personId);
+            command.RemoveUserFromSubscriptions(currentUser.Id, personId);
         }
 
-        protected void SearchUsersById()
+        public void SearchUsersById()
         {
             Console.WriteLine("Enter user Id:");
             var userId = Console.ReadLine();
-            var users = userDAL.SearchById(userId);
+            var users = command.SearchUsersById(userId);
             displayUsers(users);
         }
 
-        protected void SearchUsersByName()
+        public void SearchUsersByName()
         {
             Console.WriteLine("Enter user first name:");
             var firstName = Console.ReadLine();
             Console.WriteLine("Enter user last name:");
             var lastName = Console.ReadLine();
-            var users = userDAL.SearchByName(firstName, lastName);
+            var users = command.SearchUsersByName(firstName, lastName);
             displayUsers(users);
         }
 
-        protected void SearchUsersByEmail()
+        public void SearchUsersByEmail()
         {
             Console.WriteLine("Enter user email:");
             var email = Console.ReadLine();
-            var users = userDAL.SearchByEmail(email);
+            var users = command.SearchUsersByEmail(email);
             displayUsers(users);
         }
 
-        protected void SearchUsersByInterests()
+        public void SearchUsersByInterests()
         {
             Console.WriteLine("Enter user interest:");
             var interest = Console.ReadLine();
-            var users = userDAL.SearchByInterests(interest);
+            var users = command.SearchUsersByInterests(interest);
             displayUsers(users);
         }
 
-        void displayPostsAndComments(List<PostDTO> posts, List<CommentDTO> comments)
+        void displayUsers(List<UserDTOMongoDB> users)
+        {
+            Console.WriteLine("\nUsers:");
+            foreach (var user in users)
+            {
+                Console.WriteLine(user.ToString());
+                displayConnectionIfExists(currentUser.Id, user.Id);
+                displayShortestPath(currentUser.Id, user.Id);
+            }
+        }
+
+        void displayPostsAndComments(List<PostDTOMongoDB> posts, List<CommentDTOMongoDB> comments)
         {
             Console.WriteLine("\nPosts:");
             foreach (var post in posts)
             {
                 Console.WriteLine(post.ToString());
-                comments = commentDAL.GetCommentsByPostId(post.Id);
+                comments = command.GetCommentsByPostId(post.Id);
                 Console.WriteLine("\n\tComments:");
                 foreach (var comment in comments)
                 {
@@ -260,13 +273,17 @@ namespace SocialNetwork
             }
         }
 
-        void displayUsers(List<UserDTO> users)
+        void displayConnectionIfExists(string userId, string personId)
         {
-            Console.WriteLine("\nUsers:");
-            foreach(var user in users)
-            {
-                Console.WriteLine(user.ToString());
-            }
+            if (command.CheckConnection(userId, personId) != null)
+                Console.WriteLine("You are subscribed to this user");
+            else
+                Console.WriteLine("You are not subscribed to this user");
+        }
+
+        void displayShortestPath(string userId, string personId)
+        {
+            Console.WriteLine($"Shortest path to user: {command.FindShortestPath(userId, personId)}");
         }
     }
 }

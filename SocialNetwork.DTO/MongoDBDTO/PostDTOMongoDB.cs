@@ -1,28 +1,27 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
-using MongoDB.Bson;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 using System.Collections.Generic;
 
 namespace SocialNetwork.DTO
 {
-    public class CommentDTO
+    public class PostDTOMongoDB
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
 
-        [BsonElement("Body")]
-        public string Body { get; set; }
-
-        [BsonElement("PostId")]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string PostId { get; set; }
-
         [BsonElement("UserId")]
         [BsonRepresentation(BsonType.ObjectId)]
         public string UserId { get; set; }
 
+        [BsonElement("Title")]
+        public string Title { get; set; }
+
         [BsonElement("User")]
         public string User { get; set; }
+
+        [BsonElement("Body")]
+        public string Body { get; set; }
 
         [BsonElement("CreatedDate")]
         public string CreatedDate { get; set; }
@@ -36,11 +35,12 @@ namespace SocialNetwork.DTO
 
         public override string ToString()
         {
-            return $"\n\tUser: {this.User}" +
-                $"\n\tUserId: {this.UserId}" +
-                $"\n\tCommentId: {this.Id}" +
-                $"\n\tCreatedDate: {this.CreatedDate}" +
-                $"\n\tBody: \n\t{this.Body}";
+            return $"\nUser: {this.User}" +
+                $"\nUserId: {this.UserId}" + 
+                $"\nTitle: {this.Title}" +
+                $"\nPostId: {this.Id}" +
+                $"\nCreatedDate: {this.CreatedDate}" +
+                $"\nBody: \n{this.Body}";
         }
     }
 }

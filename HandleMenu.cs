@@ -38,7 +38,7 @@ namespace SocialNetwork
                     {
                         visualMenu.ShowMainMenu();
                         userInput = Console.ReadLine();
-                        handleMainMenu(userInput);
+                        handleMainMenu(ref userInput);
                     } while (userInput != "0");
                     break;
                 case "2":
@@ -53,7 +53,7 @@ namespace SocialNetwork
             }
         }
 
-        void handleMainMenu(string userInput)
+        void handleMainMenu(ref string userInput)
         {
             Console.Clear();
             switch (userInput)
@@ -77,6 +77,10 @@ namespace SocialNetwork
                 case "3":
                     ShowStream();
                     invokeCommentsAndLikesToPostMenu(ref userInput);
+                    break;
+                case "4":
+                    DeleteUser();
+                    userInput = "0";
                     break;
                 case "0":
                     break;
@@ -172,7 +176,7 @@ namespace SocialNetwork
                     {
                         visualMenu.ShowSearchUsersMenu();
                         userInput = Console.ReadLine();
-                        handleSearchUsersMenu(userInput);
+                        handleSearchUsersMenu(ref userInput);
                     } while (userInput != "0");
                     break;
                 case "2":
@@ -186,7 +190,7 @@ namespace SocialNetwork
             }
         }
 
-        void handleSearchUsersMenu(string userInput)
+        void handleSearchUsersMenu(ref string userInput)
         {
             Console.Clear();
             switch (userInput)
@@ -194,18 +198,22 @@ namespace SocialNetwork
                 case "1":
                     SearchUsersById();
                     invokeManageSubscriptionsMenu(ref userInput);
+                    userInput = "0";
                     break;
                 case "2":
                     SearchUsersByName();
                     invokeManageSubscriptionsMenu(ref userInput);
+                    userInput = "0";
                     break;
                 case "3":
                     SearchUsersByEmail();
                     invokeManageSubscriptionsMenu(ref userInput);
+                    userInput = "0";
                     break;
                 case "4":
                     SearchUsersByInterests();
                     invokeManageSubscriptionsMenu(ref userInput);
+                    userInput = "0";
                     break;
                 case "0":
                     break;

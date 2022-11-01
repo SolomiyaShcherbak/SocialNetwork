@@ -7,8 +7,8 @@
     <ProjectGuid>{7311B2F5-A44F-425F-9FC1-AAE9C28A241C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SocialNetwork.DAL</RootNamespace>
-    <AssemblyName>SocialNetwork.DAL</AssemblyName>
+    <RootNamespace>SocialNetwork.MongoDBDAL</RootNamespace>
+    <AssemblyName>SocialNetwork.MongoDBDAL</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -165,12 +165,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Concrete\CommentDAL.cs" />
-    <Compile Include="Concrete\PostDAL.cs" />
-    <Compile Include="Concrete\UserDAL.cs" />
-    <Compile Include="Interfaces\ICommentDAL.cs" />
-    <Compile Include="Interfaces\IPostDAL.cs" />
-    <Compile Include="Interfaces\IUserDAL.cs" />
+    <Compile Include="Concrete\CommentDALMongoDB.cs" />
+    <Compile Include="Concrete\PostDALMongoDB.cs" />
+    <Compile Include="Concrete\UserDALMongoDB.cs" />
+    <Compile Include="Interfaces\ICommentDALMongoDB.cs" />
+    <Compile Include="Interfaces\IPostDALMongoDB.cs" />
+    <Compile Include="Interfaces\IUserDALMongoDB.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -21,6 +21,7 @@ Move to category:
 1: Posts ->
 2: Users ->
 3: Show a stream ->
+4: Delete your account ->
 0: Back";
             Console.WriteLine(menu);
         }
