@@ -1,20 +1,9 @@
 ﻿using SocialNetwork.MongoDBDAL.Concrete;
-<<<<<<< HEAD
 using SocialNetwork.DTO;
 using System;
 using System.Collections.Generic;
 using SocialNetwork.BLL;
 using SocialNetwork.Neo4JDAL.Concrete;
-=======
-using SocialNetwork.MongoDBDAL.Interfaces;
-using SocialNetwork.DTO;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using SocialNetwork.BLL;
-using SocialNetwork.Neo4JDAL.Concrete;
-using SocialNetwork.DTO.Neo4JDTO;
->>>>>>> 095759200502d0442076f1296f8cbea7ce452052
 
 namespace SocialNetwork
 {
